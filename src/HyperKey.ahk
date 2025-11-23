@@ -341,8 +341,8 @@ return
 ; Explicitly block all other keys during HyperKey mode unless they are defined
 ; If you want to block a key, add it to the list below   
 
-    ; d:: is NOT defined here - only in specific application sections
-    ; This ensures that d is automatically blocked in undefined applications
+    ; d:: is handled in the "BLOCKING FOR OTHER APPLICATIONS" section below 
+    ; It is enabled for specific apps (VS Code, Obsidian) and explicitly blocked for others.
 
     ; Block the following keys during HyperKey mode
     b::return
