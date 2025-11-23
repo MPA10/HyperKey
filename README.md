@@ -46,6 +46,15 @@ Add `Shift` to any navigation key to select text while moving.
 ; ║                   HYPERKEY LAYOUT REFERENCE                      ║
 ; ╠══════════════════════════════════════════════════════════════════╣
 ; ║                                                                  ║
+; ║  ┌─ HOME ROW LAYOUT (ANSI US QWERTY) ────────────────────────┐   ║
+; ║  │  [Esc] [F1]...[F12]                                       │   ║
+; ║  │  [`] [1] [2] [3] [4] [5] [6] [7] [8] [9] [0] [-] [=] [Bk] │   ║
+; ║  │  [Tab] [Q] [W] [E] [R] [T] [Y] [U] [I] [O] [P] [[] []] [\]│   ║
+; ║  │  [Caps] [A] [S] [D] [F] [G] [H] [J] [K] [L] [;] ['] [Ent] │   ║
+; ║  │  [Shift] [Z] [X] [C] [V] [B] [N] [M] [,] [.] [/] [Shift]  │   ║
+; ║  │  [Ctrl] [Win] [Alt]   [Space]   [Alt] [Win] [Menu] [Ctrl] │   ║
+; ║  └───────────────────────────────────────────────────────────┘   ║
+; ║                                                                  ║
 ; ║  ┌─ NAVIGATION ──────────────────────────────────────────────┐   ║
 ; ║  │  ARROW KEYS:                                              │   ║
 ; ║  │  CapsLock + [I] = ↑                                       │   ║
