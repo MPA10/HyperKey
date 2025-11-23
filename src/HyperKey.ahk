@@ -166,14 +166,28 @@ return
     =::Send, {Text}+ ; Plus sign
     `::Send, ~ ; Tilde (hyperkey + `)
 
-; QUOTES - Unicode Method (Bypasses keyboard layout and dead keys entirely)
+; ================================================================================================
+; QUOTES - Layout-Independent (US/NL) & Context-Aware - Solves the "Dead Key" issue found in layouts like NL-QWERTY vs US-QWERTY.
+; ================================================================================================
+;
+; The Problem:
+; - NL-QWERTY: Quotes are "dead keys" (waiting for input to create accents like é/ë).
+; - US-QWERTY: Quotes are immediate keys.
+;
+; The Solution:
+; - HyperKey + ' or " uses Unicode to bypass layout specifics, ensuring consistent behavior.
+; - Inserts paired quotes ('') and places cursor inside, regardless of active layout.
+; - Context-Aware: Sends single quote in apps with auto-close (VS Code, Obsidian).
+; - Native Behavior: Normal typing (without HyperKey) retains dead key functionality for accents.
+;
+; - VS Code & Obsidian: These apps have their own "auto-close" features, so we only send a single quote to avoid duplication.
     ':: ; HyperKey + '
         if (WinActive("ahk_exe Code.exe") || WinActive("ahk_exe Obsidian.exe")) {
             ; Send Unicode Single Quote (U+0027)
-            SendInput, {U+0027}
+            SendInput, {U+0027} 
         } else {
             ; Send two Unicode Single Quotes and move left
-            SendInput, {U+0027}{U+0027}
+            SendInput, {U+0027}{U+0027} 
             Sleep, 20 ; Short delay to ensure characters are placed before moving
             SendInput, {Left}
         }
@@ -181,11 +195,11 @@ return
     
     +':: ; HyperKey + Shift + '
         if (WinActive("ahk_exe Code.exe") || WinActive("ahk_exe Obsidian.exe")) {
-            ; Send Unicode Double Quote (U+0022)
+            ; Send Unicode Double Quote (U+0022) ; Send double quote only
             SendInput, {U+0022}
         } else {
             ; Send two Unicode Double Quotes and move left
-            SendInput, {U+0022}{U+0022}
+            SendInput, {U+0022}{U+0022} 
             Sleep, 20 ; Short delay to ensure characters are placed before moving
             SendInput, {Left}
         }
