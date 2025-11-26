@@ -212,6 +212,7 @@ Add `Shift` to any navigation key to select text while moving.
   - **Context-aware**: In VS Code/Obsidian only sends single quote because they have their own auto-pairing
 - **Context-Aware**: Different behavior in code editors vs other apps
 - **Key Blocking**: Unused keys are automatically blocked to prevent accidents
+- **Hotkey Blocking Mechanism**: In v2.0, blocking hotkeys are placed at the end of the script to ensure app-specific hotkeys (e.g., HyperKey+D in VS Code) take precedence over global blocks.
 
 ---
 

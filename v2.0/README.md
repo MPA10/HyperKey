@@ -61,6 +61,12 @@ yourKey::Send("yourCommand")
 
 ---
 
+## Advanced Features
+
+- **Hotkey Blocking Mechanism**: All blocking hotkeys are defined at the end of the script, inside a single `#HotIf GetKeyState("CapsLock", "P")` block. This is intentional: in AutoHotkey v2.0, the last hotkey definition takes precedence. By placing the blocklist last, app-specific hotkeys (such as for VS Code, Obsidian, etc.) always work as intended, and all other keys are blocked only when HyperKey is active. This change was made to ensure context-aware hotkeys are never accidentally overridden by global blocks. For example, HyperKey+D duplicates a line in VS Code, but is blocked in other apps.
+
+---
+
 ## Migrating from v1.1
 
 1. **Backup** your current setup

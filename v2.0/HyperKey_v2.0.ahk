@@ -8,6 +8,9 @@
 ; 88""Yb   8P       .8.8.8.     88YbdP88 88 88"Yb  88""   88"""   dP__Yb    88 Yb   dP 
 ; 88oodP  dP           "        88 YY 88 88 88  Yb 888888 88     dP""""Yb   88  YbodP  
 ;
+; HyperKey Script Version: 2.1.0
+; Compatible with AutoHotkey v2.0+
+;
 ; ================================================================================================
 ; HYPERKEY WINDOWS SCRIPT v2.0 - Advanced Keyboard Productivity Enhancement
 ; ================================================================================================
@@ -75,7 +78,7 @@
 ;
 ; AUTHOR: Mike Pattyn
 ; LICENSE: MIT - Free to use and modify
-; VERSION: 2.0
+; VERSION: 2.1.0
 ; LAST UPDATED: November 2025
 ;
 ; ================================================================================================
@@ -104,6 +107,29 @@ APP_BRAVE := "ahk_exe brave.exe"
 APP_SSMS := "ahk_exe Ssms.exe"
 
 ; ================================================================================================
+; HELPER FUNCTIONS
+; ================================================================================================
+
+; Check if Shift is pressed (simplified version)
+IsShiftPressed()
+{
+    return GetKeyState("Shift")
+}
+
+; Smart delete function with selection check
+SmartDelete(deleteCommand)
+{
+    if (IsShiftPressed())
+    {
+        Send("{Backspace}") ; Delete selection if there is a selection
+    }
+    else
+    {
+        Send(deleteCommand) ; Execute the specific delete command
+    }
+}
+
+; ================================================================================================
 ; HYPERKEY CONFIGURATION (CapsLock as HyperKey)
 ; ================================================================================================
 ; CapsLock hold activates HyperKey functionality:
@@ -129,7 +155,7 @@ CapsLock::
         ; CapsLock held longer - this is HyperKey mode
         isHyperKeyActive := true
         tapCount := 0
-        SetTimer(HandleDoubleTap, 0) ; Cancel double tap functionality
+        CleanupTimers() ; Ensure no conflicting timers
         SetTimer(CheckCapsLock, 10) ; Start timer to monitor CapsLock status
     }
     else
@@ -161,6 +187,13 @@ CheckCapsLock()
         KeyWait("CapsLock") ; Wait for CapsLock to be released
         isHyperKeyActive := false
     }
+}
+
+; Cleanup function for timers
+CleanupTimers()
+{
+    SetTimer(HandleDoubleTap, 0)
+    SetTimer(CheckCapsLock, 0)
 }
 
 ; ================================================================================================
@@ -340,105 +373,15 @@ o::Send("{End}") ; Go to line end with Hyperkey + O
 +o::Send("+{End}") ; Select to line end with Hyperkey + Shift + O
 
 ; Delete Characters/Words Left and Right of cursor, with selection check
-n:: ; Delete WORD left or delete selection
-{
-    if (GetKeyState("Shift") || GetKeyState("LShift") || GetKeyState("RShift"))
-    {
-        Send("{Backspace}") ; Delete selection if there is a selection
-    }
-    else
-    {
-        Send("^{Backspace}") ; Delete word left without selection
-    }
-}
+n::SmartDelete("^{Backspace}") ; Delete WORD left or delete selection
 
-.:: ; Delete WORD right or delete selection
-{
-    if (GetKeyState("Shift") || GetKeyState("LShift") || GetKeyState("RShift"))
-    {
-        Send("{Backspace}") ; Delete selection if there is a selection
-    }
-    else
-    {
-        Send("^{Delete}") ; Delete word right without selection
-    }
-}
+.::SmartDelete("^{Delete}") ; Delete WORD right or delete selection
 
-m:: ; Delete CHARACTER left or delete selection
-{
-    if (GetKeyState("Shift") || GetKeyState("LShift") || GetKeyState("RShift"))
-    {
-        Send("{Backspace}") ; Delete selection if there is a selection
-    }
-    else
-    {
-        Send("{Backspace}") ; Delete character left without selection
-    }
-}
+m::SmartDelete("{Backspace}") ; Delete CHARACTER left or delete selection
     
-,:: ; Delete CHARACTER right or delete selection
-{
-    if (GetKeyState("Shift") || GetKeyState("LShift") || GetKeyState("RShift"))
-    {
-        Send("{Backspace}") ; Delete selection if there is a selection
-    }
-    else
-    {
-        Send("{Delete}") ; Delete character right without selection
-    }
-}
+,::SmartDelete("{Delete}") ; Delete CHARACTER right or delete selection
 
-; Explicitly block all other keys during HyperKey mode unless they are defined
-; If you want to block a key, add it to the list below   
 
-; d:: is handled in the "BLOCKING FOR OTHER APPLICATIONS" section below 
-; It is enabled for specific apps (VS Code, Obsidian) and explicitly blocked for others.
-
-; Block the following keys during HyperKey mode
-b::return
-e::return
-f::return
-q::return
-r::return
-s::return
-t::return
-w::return
-y::return
-\::return
-p::return
-g::return
-#::return
-
-; Explicitly block all other keys during HyperKey mode with shift
-+a::return
-+b::return 
-+d::return
-+e::return
-+f::return
-+q::return
-+r::return 
-+s::return
-+t::return
-+w::return
-+y::return
-+m::return
-+n::return
-+,::return
-+.::return
-+\::return
-+p::return
-+g::return
-+#::Return
-
-#HotIf
-
-; ================================================================================================
-; BLOCKING FOR OTHER APPLICATIONS
-; ================================================================================================
-; Block specific keys in applications where they should not have functionality
-#HotIf GetKeyState("CapsLock", "P") && !WinActive(APP_VSCODE) && !WinActive(APP_VISUAL_STUDIO) && !WinActive(APP_OBSIDIAN)
-d::return ; Block d in all other applications except VS Code, Visual Studio, and Obsidian
-#HotIf
 
 ; ================================================================================================
 ; VISUAL STUDIO CODE SPECIFIC COMBINATIONS
@@ -448,6 +391,7 @@ d::Send("+!{Down}") ; HyperKey + D: Duplicate line (Like default shortcut Shift 
 /::Send("^/") ; HyperKey + /: Toggle comment (Ctrl + /)
 !i::SendInput("{Alt Down}{Up}{Alt Up}") ; HyperKey + Alt + I: Move line up
 !k::SendInput("{Alt Down}{Down}{Alt Up}") ; HyperKey + Alt + K: Move line down
+e::Send("^+e") ; HyperKey + E: Focus Explorer (Ctrl+Shift+E)
 #HotIf
 
 ; ================================================================================================
@@ -536,48 +480,102 @@ r::Send("{F5}") ; HyperKey + R: Execute query (F5)
 ; Smart comment toggle - HyperKey + /
 /::
 {
-    ; Save current clipboard content
+    ; Save current clipboard content safely
     ClipSaved := ClipboardAll()
-    A_Clipboard := "" ; Clear clipboard
-
-    ; Copy current selection to clipboard
+    
+    ; Clear clipboard and copy selection
+    A_Clipboard := ""
     Send("^c")
-    if (!ClipWait(1)) ; Wait max 1 second until content is in clipboard
+    
+    ; Wait for clipboard with timeout
+    if (!ClipWait(1))
     {
         A_Clipboard := ClipSaved ; Restore clipboard if copy failed
         return
     }
 
-    ; Check selection
-    if (A_Clipboard != "")
+    ; Check if we have content to work with
+    if (A_Clipboard = "")
     {
-        ; Check if all selected lines start with "--"
-        if (RegExMatch(A_Clipboard, "m)^\s*--"))
-        {
-            ; If lines start with "--", execute Uncomment
-            Send("^k")
-            Sleep(50)
-            Send("^u")
-            Sleep(50)
-            Send("+{End}")
-        }
-        else
-        {
-            ; If no lines with "--", execute Comment
-            Send("^k")
-            Sleep(50)
-            Send("^c")
-            Sleep(50)
-            Send("+{End}")
-        }
+        A_Clipboard := ClipSaved ; Restore clipboard
+        return
+    }
+
+    ; Check if all selected lines start with "--" (SQL comments)
+    if (RegExMatch(A_Clipboard, "m)^\s*--"))
+    {
+        ; Uncomment: Remove "--" from start of lines
+        Send("^k")
+        Sleep(50)
+        Send("^u")
+        Sleep(50)
+        Send("+{End}")
+    }
+    else
+    {
+        ; Comment: Add "--" to start of lines
+        Send("^k")
+        Sleep(50)
+        Send("^c")
+        Sleep(50)
+        Send("+{End}")
     }
     
-    ; Restore original clipboard
+    ; Always restore original clipboard
     A_Clipboard := ClipSaved
-    ClipSaved := ""
 }
 
 #HotIf
+
+; ================================================================================================
+; BLOCKING HOTKEYS (Placed at the end for correct override behavior)
+; ================================================================================================
+; All blocking hotkeys are defined below, inside a single #HotIf GetKeyState("CapsLock", "P") block.
+; This is intentional: in AutoHotkey v2.0, the last hotkey definition takes precedence.
+; By placing the blocklist last, app-specific hotkeys (such as for VS Code, Obsidian, etc.) always
+; work as intended, and all other keys are blocked only when HyperKey is active.
+; This change was made to ensure context-aware hotkeys are never accidentally overridden by global blocks.
+; Example: HyperKey+D duplicates a line in VS Code, but is blocked in other apps.
+
+; Block the following keys during HyperKey mode
+#HotIf GetKeyState("CapsLock", "P") ; When CapsLock is pressed, block the following hotkeys
+b::return
+d::return
+e::return
+f::return
+q::return
+r::return
+s::return
+t::return
+w::return
+y::return
+\::return
+p::return
+g::return
+#::return
+
+; Explicitly block all other keys during HyperKey mode with shift
++a::return
++b::return 
++d::return
++e::return
++f::return
++q::return
++r::return 
++s::return
++t::return
++w::return
++y::return
++m::return
++n::return
++,::return
++.::return
++\::return
++p::return
++g::return
++#::Return
+#HotIf
+
 
 ; ================================================================================================
 ; CAPSLOCK STATUS MANAGEMENT

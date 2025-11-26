@@ -8,6 +8,9 @@
 ; 88""Yb   8P       .8.8.8.     88YbdP88 88 88"Yb  88""   88"""   dP__Yb    88 Yb   dP 
 ; 88oodP  dP           "        88 YY 88 88 88  Yb 888888 88     dP""""Yb   88  YbodP  
 ;
+; HyperKey Script Version: 1.1.0
+; Compatible with AutoHotkey v1.1+
+;
 ; ================================================================================================
 ; HYPERKEY WINDOWS SCRIPT - Advanced Keyboard Productivity Enhancement
 ; ================================================================================================
@@ -75,7 +78,7 @@
 ;
 ; AUTHOR: Mike Pattyn
 ; LICENSE: MIT - Free to use and modify
-; VERSION: 2.0
+; VERSION: 1.1.0
 ; LAST UPDATED: November 2025
 ;
 ; ================================================================================================

@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## HyperKey [Unreleased]
 
 ### Planned
 - Comment enhancements
@@ -16,19 +16,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [2.0.0] - 2025-11-25
+## HyperKey [2.1.0] - 2025-11-26
+
+### Added
+- New hotkey: HyperKey + E in VS Code to focus/unfocus Explorer (Ctrl+Shift+E)
+- Moved all blocking hotkeys to the end of the script with detailed explanation for correct override behavior
+
+### Changed
+- Updated documentation with detailed hotkey blocking mechanism explanations
+- Added version comments to all script files for clarity
+- Fixed version references in script headers
+- Improved changelog formatting and consistency
+
+### Fixed
+- Corrected incorrect version references in v1.1 script header
+
+---
+
+## HyperKey [2.0.0] - 2025-11-25
 
 ### Added
 - AutoHotkey v2.0 compatibility
 - Modern syntax implementation
 - Project structure based on different AutoHotkey versions 
 - Comprehensive migration documentation
+- App-specific hotkey (HyperKey + E for VS Code Explorer focus/unfocus to switch quickly between editor and file explorer)
 
 ### Changed
 - **BREAKING**: Requires AutoHotkey v2.0+
 - Updated all hotkey syntax to v2.0 standards
 - Improved timer management and key state detection
 - Refactored clipboard operations for better reliability
+- Moved all blocking hotkeys to the end of the script for correct override behavior. This ensures app-specific hotkeys always take precedence over global blocks.
+- Refactored app executable names to use variables for easier maintenance
+- Removed obsolete blocking section for cleaner code
 
 ### Deprecated
 - AutoHotkey v1.1 support (moved to legacy v1.1 branch)
@@ -40,7 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.1.0] - 2024-XX-XX
+## HyperKey [1.1.0] - 2024-XX-XX
 
 ### Added
 - SQL Server Management Studio (SSMS) specific shortcuts
@@ -71,7 +92,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.0] - 2022-XX-XX
+## HyperKey [1.0.0] - 2022-XX-XX
 
 ### Added
 - Initial release of HyperKey-script for Windows
@@ -92,9 +113,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Release Date | AutoHotkey | Status |
 |---------|--------------|------------|--------|
-| 2.0.0 | 2025-11-25 | v2.0+ | ✅ Current |
-| 1.1.0 | 2024-XX-XX | v1.1+ | ⚠️ Legacy |
-| 1.0.0 | 2022-XX-XX | v1.1+ | ⚠️ Legacy |
+| 2.1.0  | 2025-11-26  | v2.0+     | ✅ Current |
+| 2.0.0  | 2025-11-25  | v2.0+     | ⚠️ Legacy |
+| 1.1.0  | 2024-XX-XX  | v1.1+     | ⚠️ Legacy |
+| 1.0.0  | 2022-XX-XX  | v1.1+     | ⚠️ Legacy |
 
 
 
