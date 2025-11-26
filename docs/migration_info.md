@@ -19,7 +19,7 @@ This info file describes the migration from AutoHotkey v1.1 to v2.0 for the Hype
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 ### Before You Start
 
@@ -37,7 +37,7 @@ HyperKey.ahk has been renamed to HyperKey_v1.1.ahk and placed in the v1.1 folder
 
 ---
 
-## 🚀 Migration Steps
+## Migration Steps
 
 ### Step 1: Install AutoHotkey v2.0
 1. Download AutoHotkey v2.0 from the official website
@@ -78,14 +78,14 @@ Test all your frequently used features:
 
 ---
 
-## 🔧 Configuration Migration
+## Configuration Migration
 
 ### Custom Shortcuts
 If you modified the v1.1 script, you'll need to update v2.0:
 
 ---
 
-## ⚠️ Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -106,15 +106,14 @@ If you modified the v1.1 script, you'll need to update v2.0:
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
-- [AutoHotkey v2.0 Migration Guide](https://www.autohotkey.com/docs/v2/migration-from-v1.htm)
 - [v2.0 Script Syntax Reference](https://www.autohotkey.com/docs/v2/)
-- [HyperKey v2.0 Documentation](../v2.0/README_v2.0.md)
+- [HyperKey v2.0 Documentation](../v2.0/README.md)
 
 ---
 
-## ✅ Migration Checklist
+## Migration Checklist
 
 - [ ] Backup v1.1 setup
 - [ ] Install AutoHotkey v2.0
