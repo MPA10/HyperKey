@@ -2,29 +2,67 @@
 
 Hijack your CapsLock: transform your keyboard with powerful navigation, editing, and productivity shortcuts.
 
-## Why I Built This
-
-As a long-time macOS user, I was accustomed to the incredible productivity of **Karabiner-Elements** - the ability to transform CapsLock into a powerful HyperKey that unlocks a complete secondary keyboard layer. When I switched to Windows for work, I immediately noticed a productivity gap: my hands constantly had to leave the home row for arrow keys, and I missed the consistent shortcuts I was used to on macOS.
-After extensive searching for Windows alternatives, I found that most existing AutoHotkey scripts were either too limited or awkward to use. I wanted the same seamless experience as Karabiner: a smart CapsLock that works both as a modifier and supports double-tap Escape, with context-aware behavior for different applications.
-This script is the result of that quest - a Windows equivalent that mimics the macOS productivity experience, powered by AutoHotkey. It combines the best of both worlds: the familiar Vim-inspired navigation, with Windows-specific optimizations for VS Code, SSMS, Obsidian, and other popular applications.
+---
 
 ## Table of Contents
 
+- [Why I Built This](#why-i-built-this)
+- [Quick Version Selection](#quick-version-selection)
 - [Quick Start](#quick-start)
 - [Basic Usage](#basic-usage-ansi-us-qwerty-layout)
+- [Visual Layout Reference](#visual-layout-reference)
 - [Practical Examples](#practical-examples)
 - [Real-World Usage](#real-world-usage)
 - [Advanced Features](#advanced-features)
-- [Visual Layout Reference](#visual-layout-reference)
 - [Auto-Start Configuration](#auto-start-configuration)
-- [Development (Optional)](#development-optional)
+- [Version-Specific Documentation](#version-specific-documentation)
+- [Version Comparison](#version-comparison)
+- [Support](#support)
+
+---
+
+## Why I Built This
+
+As a long-time macOS user, I was accustomed to the incredible productivity of **Karabiner-Elements** - the ability to transform CapsLock into a powerful HyperKey that unlocks a complete secondary keyboard layer. When I switched to Windows for work, I immediately noticed a productivity gap: my hands constantly had to leave the home row for arrow keys, and I missed the consistent shortcuts I was used to on macOS.
+
+After extensive searching for Windows alternatives, I found that most existing AutoHotkey scripts were either too limited or awkward to use. I wanted the same seamless experience i had with Karabiner: a smart CapsLock that works both as a modifier and supports double-tap Escape, with context-aware behavior for different applications.
+
+This script is the result of that quest - a Windows equivalent that mimics my macOS productivity experience, powered by AutoHotkey. It combines the best of both worlds: the familiar Vim-inspired navigation, with Windows-specific optimizations for VS Code, SSMS, Obsidian, and other popular applications which i will update over time as my needs evolve. I hope it helps others achieve the same productivity boost on Windows!
+
+---
+
+## Quick Version Selection
+
+Choose your AutoHotkey version:
+
+### **Version 2.0 (Recommended)**
+- **AutoHotkey v2.0** compatible
+- Modern syntax and improved performance
+- Enhanced error handling
+- **Script**: `v2.0/HyperKey_v2.0.ahk`
+
+### **Version 1.1 (Legacy)**
+- **AutoHotkey v1.1** compatible
+- Stable and proven functionality
+- Original implementation
+- **Script**: `v1.1/HyperKey_v1.1.ahk`
+
+> **New to HyperKey?** Start with v2.0 for the best experience.  
+> **Currently using v1.1?** See [Migration Info](docs/migration_info.md) for upgrade instructions.
+
+---
 
 ## Quick Start
 
-1. Install [AutoHotkey](https://www.autohotkey.com/)
-2. Save script as `HyperKey.ahk`
-3. Double-click to run
-4. Add to startup folder for auto-launch
+1. **Choose your version** (see selection above)
+2. **Install AutoHotkey**:
+   - [AutoHotkey v2.0](https://www.autohotkey.com/) (recommended)
+   - [AutoHotkey v1.1](https://www.autohotkey.com/download/1.1/) (legacy)
+3. **Download the script** from your chosen version folder
+4. **Double-click to run** the `.ahk` file
+5. **Add to startup folder** for auto-launch (see below)
+
+---
 
 ## Basic Usage (Ansi US-QWERTY Layout)
 
@@ -32,13 +70,15 @@ This script is the result of that quest - a Windows equivalent that mimics the m
 - **CapsLock + H/;** = Word left/right
 - **CapsLock + U/O** = Line start/end
 - **CapsLock + X/C/V** = Cut/Copy/Paste
-- **CapsLock + Z** = Undo | **CapsLock + Shift+Z** = Redo
 - **CapsLock + Shift+V** = Open clipboard history (Win+V)
+- **CapsLock + Z** = Undo | **CapsLock + Shift+Z** = Redo
 - **CapsLock + D** = Duplicate line (VS Code, SSMS, Obsidian, Visual Studio)
 - **Double-tap CapsLock** = Escape
 - **RShift + CapsLock** = Toggle real CapsLock
 
 Add `Shift` to any navigation key to select text while moving.
+
+---
 
 ## Visual Layout Reference
 
@@ -115,58 +155,73 @@ Add `Shift` to any navigation key to select text while moving.
 ; ╚══════════════════════════════════════════════════════════════════╝
 ```
 
+---
+
 ## Practical Examples
 
 ### App-Specific Features
-- **VS Code:** 
-  - CapsLock+D duplicates line
-  - CapsLock+/ toggles comments
-  - CapsLock+Alt+I/K moves line up/down
-- **Visual Studio:** 
-  - CapsLock+D duplicates line
-  - CapsLock+/ toggles comments
-  - CapsLock+Alt+I/K moves line up/down
-- **SSMS:** 
-  - CapsLock+R executes query
-  - CapsLock+Shift+0 inserts SELECT-FROM-WHERE template
-  - CapsLock+/ smart comment toggle (detects if already commented)
-- **Obsidian:** 
-  - CapsLock+D duplicates line
-  - CapsLock+Alt+J/L navigates between headers
-  - CapsLock+Ctrl+I/K folds/unfolds sections
-  - CapsLock+Ctrl+Enter opens link under cursor
-  - CapsLock+Shift+Ctrl+Enter opens link in new tab
-- **File Explorer:** 
-  - CapsLock+Alt+I/K/J/L navigates Up/Down/Back/Forward
-- **Brave Browser:** 
-  - CapsLock+Ctrl+J/L navigates back/forward
+
+#### Visual Studio Code
+- **CapsLock+D** duplicates line
+- **CapsLock+/** toggles comments
+- **CapsLock+Alt+I/K** moves line up/down
+
+#### Visual Studio
+- **CapsLock+D** duplicates line
+- **CapsLock+/** toggles comments
+- **CapsLock+Alt+I/K** moves line up/down
+
+#### SQL Server Management Studio (SSMS)
+- **CapsLock+R** executes query
+- **CapsLock+Shift+0** inserts SELECT-FROM-WHERE template
+- **CapsLock+/** smart comment toggle (detects if already commented)
+
+#### Obsidian
+- **CapsLock+D** duplicates line
+- **CapsLock+Alt+J/L** navigates between headers
+- **CapsLock+Ctrl+I/K** folds/unfolds sections
+- **CapsLock+Ctrl+Enter** opens link under cursor
+- **CapsLock+Shift+Ctrl+Enter** opens link in new tab
+
+#### File Explorer
+- **CapsLock+Alt+I/K/J/L** navigates Up/Down/Back/Forward
+
+#### Brave Browser
+- **CapsLock+Ctrl+J/L** navigates back/forward
 
 ### Universal Examples (Works Everywhere)
-- **Text editing:** CapsLock+J/K/L/I for navigation, CapsLock+X/C/V for clipboard
-- **Quick access:** CapsLock+Shift+/ for right-click menu anywhere
-- **Escape alternative:** Double-tap CapsLock instead of reaching for Esc key
+- **Text editing**: CapsLock+J/K/L/I for navigation, CapsLock+X/C/V for clipboard
+- **Quick access**: CapsLock+Shift+/ for right-click menu anywhere
+- **Escape alternative**: Double-tap CapsLock instead of reaching for Esc key
+
+---
 
 ## Real-World Usage
-- **Writing documents:** Keep hands on home row, no more reaching for arrow keys
-- **Coding:** Duplicate lines, toggle comments, navigate code efficiently  
-- **Web browsing:** Navigate back/forward without mouse
-- **SQL development:** Execute queries, insert templates instantly and comment out selected code
+
+- **Writing documents**: Keep hands on home row, no more reaching for arrow keys
+- **Coding**: Duplicate lines, toggle comments, navigate code efficiently  
+- **Web browsing**: Navigate back/forward without mouse (will be updated and added to more browsers)
+- **SQL development**: Execute queries, insert templates instantly and comment out selected code
+
+---
 
 ## Advanced Features
 
-- **Smart Wrapping:** Auto-pairs quotes/brackets with cursor positioning
-  - **Single quotes:** CapsLock + ' = '' (cursor between)
-  - **Double quotes:** CapsLock + Shift + ' = "" (cursor between)
-  - **Context-aware:** In VS Code/Obsidian only sends single quote
-- **Context-Aware:** Different behavior in code editors vs other apps
-- **Key Blocking:** Unused keys are automatically blocked to prevent accidents
+- **Smart Wrapping**: Auto-pairs quotes/brackets with cursor positioning 
+  - **Single quotes**: CapsLock + ' = '' (cursor between)
+  - **Double quotes**: CapsLock + Shift + ' = "" (cursor between)
+  - **Context-aware**: In VS Code/Obsidian only sends single quote because they have their own auto-pairing
+- **Context-Aware**: Different behavior in code editors vs other apps
+- **Key Blocking**: Unused keys are automatically blocked to prevent accidents
+
+---
 
 ## Auto-Start Configuration
 
 ### Method A: Startup Folder 
 1. Press `Win + R`
 2. Type `shell:startup` and press Enter
-3. Copy `HyperKey.ahk` to the startup folder
+3. Copy your chosen script (`HyperKey_v1.1.ahk` or `HyperKey_v2.0.ahk`) to the startup folder
 4. Script will launch automatically on Windows boot
 
 ### Method B: Task Scheduler
@@ -174,7 +229,7 @@ Add `Shift` to any navigation key to select text while moving.
 2. Create Basic Task
 3. Set trigger: "When I log on"
 4. Action: "Start a program"
-5. Browse to your `HyperKey.ahk` file
+5. Browse to your chosen script file
 
 ### Method C: Registry (Advanced)
 1. Press `Win + R`
@@ -182,11 +237,40 @@ Add `Shift` to any navigation key to select text while moving.
 3. Navigate to: `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`
 4. Right-click → New → String Value
 5. Name: `HyperKey`
-6. Value: Full path to `HyperKey.ahk`
+6. Value: Full path to your chosen script file
+
+---
 
 ## Development (Optional)
 
-For editing, use VS Code with AHK++ extension for syntax highlighting and IntelliSense.
+For editing the script, use VS Code with AHK++ extension for syntax highlighting and IntelliSense.
+
+---
+
+## Version-Specific Documentation
+
+### Version 2.0 (Recommended)
+- **Features**: Modern AutoHotkey v2.0 syntax, enhanced performance, better error handling
+- **Documentation**: [v2.0 README](v2.0/README.md)
+- **Migration**: [Migration Info](docs/migration_info.md)
+
+### Version 1.1 (Legacy)
+- **Features**: Stable AutoHotkey v1.1 implementation, proven functionality
+- **Documentation**: [v1.1 README](v1.1/README.md) *(frozen - complete standalone docs)*
+- **Status**: No longer actively developed
+
+---
+
+## Version Comparison
+
+| Feature | v1.1 (Legacy) | v2.0 (Recommended) |
+|---------|---------------|-------------------|
+| AutoHotkey Version | v1.1+ | v2.0+ |
+| Syntax | Legacy | Modern |
+| Performance | Good | Better |
+| Error Handling | Basic | Enhanced |
+| Maintenance | Deprecated | Active development |
+| Migration Path | N/A | from v1.1 |
 
 ---
 
