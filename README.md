@@ -15,7 +15,6 @@ Hijack your CapsLock: transform your keyboard with powerful navigation, editing,
 - [Real-World Usage](#real-world-usage)
 - [Advanced Features](#advanced-features)
 - [Auto-Start Configuration](#auto-start-configuration)
-- [Version-Specific Documentation](#version-specific-documentation)
 - [Version Comparison](#version-comparison)
 - [Support](#support)
 
@@ -244,20 +243,6 @@ Add `Shift` to any navigation key to select text while moving.
 ## Development (Optional)
 
 For editing the script, use VS Code with AHK++ extension for syntax highlighting and IntelliSense.
-
----
-
-## Version-Specific Documentation
-
-### Version 2.0 (Recommended)
-- **Features**: Modern AutoHotkey v2.0 syntax, enhanced performance, better error handling
-- **Documentation**: [v2.0 README](v2.0/README.md)
-- **Migration**: [Migration Info](docs/migration_info.md)
-
-### Version 1.1 (Legacy)
-- **Features**: Stable AutoHotkey v1.1 implementation, proven functionality
-- **Documentation**: [v1.1 README](v1.1/README.md) *(frozen - complete standalone docs)*
-- **Status**: No longer actively developed
 
 ---
 
