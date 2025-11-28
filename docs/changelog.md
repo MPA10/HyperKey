@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added version comments to all script files for clarity
 - Fixed version references in script headers
 - Improved changelog formatting and consistency
+ - Improved double-tap CapsLock responsiveness: Escape is now sent immediately on the second tap
+ - Refactored quote and bracket handling to use a new `InsertPair` helper function for consistency
 
 ### Fixed
 - Corrected incorrect version references in v1.1 script header
