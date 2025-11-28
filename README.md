@@ -72,7 +72,7 @@ Choose your AutoHotkey version:
 - **CapsLock + Shift+V** = Open clipboard history (Win+V)
 - **CapsLock + Z** = Undo | **CapsLock + Shift+Z** = Redo
 - **CapsLock + D** = Duplicate line (VS Code, SSMS, Obsidian, Visual Studio)
-- **Double-tap CapsLock** = Escape
+- **Double-tap CapsLock** = Escape (sent instantly on the second tap)
 - **RShift + CapsLock** = Toggle real CapsLock
 
 Add `Shift` to any navigation key to select text while moving.

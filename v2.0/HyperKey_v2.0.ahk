@@ -52,7 +52,7 @@
 ; 5. Hold CapsLock + D = Duplicate current line (context-aware)
 ; 6. Hold CapsLock + N/M = Smart delete word/character left of cursor
 ; 6. Hold CapsLock + ,/. = Smart delete word/character right of cursor
-; 7. Double-tap CapsLock quickly = Send Escape key
+; 7. Double-tap CapsLock quickly = Send Escape key (sent instantly on second tap)
 ; 8. RShift + CapsLock = Toggle actual CapsLock on/off
 ;
 ; Add Shift to any navigation key to select while moving!
@@ -150,31 +150,27 @@ isHyperKeyActive := false
 CapsLock::
 {
     global tapCount, isHyperKeyActive
-    if (!KeyWait("CapsLock", "T0.2")) ; Timeout occurred - key was held
-    {
-        ; CapsLock held longer - this is HyperKey mode
+    if (!KeyWait("CapsLock", "T0.2")) {
         isHyperKeyActive := true
         tapCount := 0
-        CleanupTimers() ; Ensure no conflicting timers
-        SetTimer(CheckCapsLock, 10) ; Start timer to monitor CapsLock status
-    }
-    else
-    {
-        ; Short tap on CapsLock - check for double tap
+        CleanupTimers()
+        SetTimer(CheckCapsLock, 10)
+    } else {
         tapCount += 1
-        SetTimer(HandleDoubleTap, -300) ; Start 300ms timer
+        if (tapCount = 2) {
+            Send("{Escape}")      ; Send Escape instantly on second tap
+            tapCount := 0        ; Reset tap counter
+            SetTimer(HandleDoubleTap, 0) ; Cancel timer if running
+        } else {
+            SetTimer(HandleDoubleTap, -300) ; Start 300ms timer for double-tap window
+        }
     }
 }
 
-; Handle double-tap functionality
 HandleDoubleTap()
 {
     global tapCount
-    if (tapCount = 2)
-    {
-        Send("{Escape}") ; Send Escape if double-tapped quickly
-    }
-    tapCount := 0 ; Reset tap counter
+    tapCount := 0 ; Reset tap counter if timer expires (no double-tap)
 }
 
 ; Monitor CapsLock state for HyperKey mode
@@ -233,87 +229,25 @@ CleanupTimers()
 ; - VS Code & Obsidian: These apps have their own "auto-close" features, so we only send a single quote to avoid duplication.
 '::
 {
-    if (WinActive(APP_VSCODE) || WinActive(APP_OBSIDIAN))
+    if (IsShiftPressed())
     {
-        ; Send Unicode Single Quote (U+0027)
-        Send("{U+0027}") 
+        InsertPair("{U+0022}", "{U+0022}") ; Shift + '
     }
     else
     {
-        ; Send two Unicode Single Quotes and move left
-        Send("{U+0027}{U+0027}") 
-        Sleep(20) ; Short delay to ensure characters are placed before moving
-        Send("{Left}")
-    }
-}
-
-+':: ; HyperKey + Shift + '
-{
-    if (WinActive(APP_VSCODE) || WinActive(APP_OBSIDIAN))
-    {
-        ; Send Unicode Double Quote (U+0022) ; Send double quote only
-        Send("{U+0022}")
-    }
-    else
-    {
-        ; Send two Unicode Double Quotes and move left
-        Send("{U+0022}{U+0022}") 
-        Sleep(20) ; Short delay to ensure characters are placed before moving
-        Send("{Left}")
+        InsertPair("{U+0027}", "{U+0027}")
     }
 }
 
 ; PARENTHESES - Context-aware behavior
-9:: ; Place parentheses and cursor inside in all contexts except VS Code, Visual Studio, and Obsidian
-{   
-    if (WinActive(APP_VSCODE) || WinActive(APP_VISUAL_STUDIO) || WinActive(APP_OBSIDIAN))
-    {
-        ; Send only opening parenthesis in Visual Studio, VS Code, and Obsidian
-        Send("(") 
-    }
-    else
-    {
-        ; Insert () everywhere and place cursor between parentheses
-        Send("()")
-        Sleep(20) 
-        Send("{Left}") ; Place cursor between parentheses
-    }
-}
+9:: InsertPair("(", ")") ; Place parentheses and cursor inside (context-aware)
 
 ; BRACKETS - Context-aware behavior
 ; Curly brackets {} with HyperKey
-+[:: ; Place curly brackets and cursor inside in all contexts except VS Code, Visual Studio, and Obsidian
-{
-    if (WinActive(APP_VSCODE) || WinActive(APP_VISUAL_STUDIO) || WinActive(APP_OBSIDIAN))
-    {
-        ; Send only opening curly bracket in Visual Studio, VS Code, and Obsidian
-        Send("{")
-    }
-    else
-    {
-        ; Insert {} everywhere and place cursor between brackets
-        SendText("{}")
-        Sleep(20) 
-        Send("{Left}") ; Place cursor between brackets
-    }
-}
++[:: InsertPair("{", "}") ; Place curly brackets and cursor inside (context-aware)
 
 ; Square brackets [] with HyperKey
-[:: ; Place square brackets and cursor inside in all contexts except VS Code, Visual Studio, and Obsidian
-{
-    if (WinActive(APP_VSCODE) || WinActive(APP_VISUAL_STUDIO) || WinActive(APP_OBSIDIAN))
-    {
-        ; Send only opening square bracket in Visual Studio, VS Code, and Obsidian
-        Send("[")
-    }
-    else
-    {
-        ; Insert [] everywhere and place cursor between brackets
-        Send("[]")
-        Sleep(20) 
-        Send("{Left}") ; Place cursor between brackets
-    }
-}
+[:: InsertPair("[", "]") ; Place square brackets and cursor inside (context-aware)
 
 ; CLIPBOARD OPERATIONS
 x::Send("^x") ; Cut with Hyperkey + X
@@ -471,11 +405,7 @@ r::Send("{F5}") ; HyperKey + R: Execute query (F5)
 }
 
 ; Quotes - HyperKey + ' for double quotes with cursor between them
-'::
-{
-    SendInput("''")
-    SendInput("{Left}")
-}
+':: InsertPair("{U+0027}", "{U+0027}")
 
 ; Smart comment toggle - HyperKey + /
 /::
@@ -592,4 +522,33 @@ g::return
 >+CapsLock::
 {
     SetCapsLockState(!GetKeyState("CapsLock", "T")) ; Toggle CapsLock state
+}
+
+; Insert a paired character (quotes, brackets, parentheses) depending on app context.
+; In editors with auto-close (VS Code, Obsidian, Visual Studio), send only the opening
+; char so the editor's auto-pairing works. Otherwise, insert both and place the cursor
+; between them.
+InsertPair(openChar, closeChar)
+{
+    if (WinActive(APP_VSCODE) || WinActive(APP_OBSIDIAN) || WinActive(APP_VISUAL_STUDIO))
+    {
+        ; Use Send for editor-specific behavior
+        Send(openChar)
+    }
+    else
+    {
+        ; For curly braces, use SendText to avoid Send special character parsing issues
+        if (openChar = "{" && closeChar = "}")
+        {
+            SendText("{}")
+            Sleep(20)
+            Send("{Left}")
+        }
+        else
+        {
+            Send(openChar closeChar)
+            Sleep(20)
+            Send("{Left}")
+        }
+    }
 }
